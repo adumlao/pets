@@ -10,21 +10,22 @@ export default (props) => {
 
   return (
     <form>
-      <label htmlFor="name">What's on your mind?</label>
+      <label htmlFor="body">What's on your mind?</label>
       <textarea
         rows = "5"
         cols = "50"
         name="body"
-        id="name"
+        id="body"
         value={body}
         onChange={handleChange} />
       <label htmlFor="description">Description</label>
       <input
+        onChange={handleChange}
         type="text"
         name="description"
         value={description}
         id="description"
-        onChange={handleChange} />
+         />
       <button
         onClick={handleSubmit}
         type="submit">Post</button>

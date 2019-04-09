@@ -24,7 +24,6 @@ export const verifyToken = async () => {
   } else {
 
     try {
-
       const resp = await api.get('/users/verify', {
         headers: {
           Authorization: `Bearer ${token}`
@@ -50,4 +49,15 @@ export const loginUser = async ({ email, password }) => {
   updateToken(data.token);
   console.log(data);
   return data;
+}
+
+export const getUser = async (id) => {
+  const resp = await api.get(`/users/${id}`);
+  console.log(resp.data);
+  return resp.data;
+};
+
+export const updateUser = async (id, data) => {
+  const resp = await api.put(`/users/${id}`, data);
+  return resp.data;
 }

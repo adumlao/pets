@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import decode from 'jwt-decode';
 import {
+  updateUser,
+  getUser,
   registerUser,
   verifyToken,
   loginUser } from './services/user';
@@ -13,6 +16,10 @@ import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import PostForm from './components/PostForm';
 import PostsList from './components/PostsList';
+import ProfilePic from './components/ProfilePic';
+import Banner from './components/Banner';
+import BioForm from './components/BioForm';
+import UserProfile from './components/UserProfile';
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +30,7 @@ class App extends Component {
         email: '',
         password: '',
       },
-      currentUser: null,
+      currentUser: [],
       loginFormData: {
         email: '',
         password: ''
@@ -34,6 +41,10 @@ class App extends Component {
         posted_by: ''
       },
       posts: [],
+      bioForm: {
+        location: '',
+        bio: '',
+      },
     }
     this.handleRegisterFormChange = this.handleRegisterFormChange.bind(this);
     this.handleLoginFormChange = this.handleLoginFormChange.bind(this);
@@ -41,24 +52,20 @@ class App extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.handlePostFormChange = this.handlePostFormChange.bind(this);
     this.handleSubmitPost = this.handleSubmitPost.bind(this);
+    this.handleBioFormChange = this.handleBioFormChange.bind(this);
+    this.submitBio = this.submitBio.bind(this);
   };
 
   async componentDidMount() {
-    try {
       const { user } = await verifyToken();
       if (user !== undefined) {
       this.setState({
         currentUser: user
       })
       await this.fetchPosts();
-      await this.fetchUsers();
-      } else {
-        this.props.history.push('/');
       }
-    } catch (e) {
-      this.props.history.push('/');
     }
-  }
+
 
   async fetchPosts() {
      const posts = await getPosts();
@@ -67,19 +74,20 @@ class App extends Component {
      });
    }
 
+   async handleLogin(e) {
+       e.preventDefault();
+       const { user }= await loginUser(this.state.loginFormData);
+       this.setState({
+         currentUser: user,
+         postForm: {
+           posted_by: user.name
+         }
+       });
+       localStorage.setItem('id', user.id);
+       this.fetchPosts();
+       this.props.history.push('/feed');
+     }
 
-    async handleLogin(e) {
-    e.preventDefault();
-    const { user }= await loginUser(this.state.loginFormData);
-    this.setState({
-      currentUser: user,
-      postForm: {
-        posted_by: user.name
-      }
-    });
-    this.fetchPosts();
-    this.props.history.push('/feed');
-  }
 
   handleLoginFormChange(e) {
     const { name, value } = e.target;
@@ -101,19 +109,21 @@ class App extends Component {
     }));
   }
 
+
   async handleRegister(e) {
-    e.preventDefault();
-    const { registerFormData } = this.state;
-    const { user } = await registerUser(registerFormData);
-    this.setState({
-      currentUser: user,
-      postForm: {
-        posted_by: user.name
-      }
-    });
-    this.fetchPosts();
-    this.props.history.push('/feed');
-  }
+   e.preventDefault();
+   const { registerFormData } = this.state;
+   const { user } = await registerUser(registerFormData);
+   this.setState({
+     currentUser: user,
+     postForm: {
+       posted_by: user.name
+     }
+   });
+   localStorage.setItem('id', user.id);
+   this.fetchPosts();
+   this.props.history.push('/feed');
+ }
 
 
   async handleCreatePost() {
@@ -137,8 +147,24 @@ class App extends Component {
     }))
   }
 
+  handleBioFormChange(e) {
+   const { name, value } = e.target;
+   this.setState(prevState => ({
+     bioForm: {
+       ...prevState.bioForm,
+       [name]: value
+     }
+   }))
+ }
+
+  async submitBio(){
+    const id = await localStorage.getItem('id');
+    const updated = await updateUser(id, this.state.bioForm);
+
+    this.props.history.push(`/userprofile`);
+   }
+
   render() {
-    console.log(this.state.posted_by);
     const {
       currentUser
     } = this.state;
@@ -146,20 +172,12 @@ class App extends Component {
     return (
       <div className="App">
 
-      {this.state.currentUser === null && (
         <nav>
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
         </nav>
-      )}
 
-      <Route exact path="/" render={(props) => {
-          return (
-            <>
-            {this.state.currentUser && <Redirect to="/register" />}
-            </>
-          )
-        }} />
+
 
       <Route path="/register" render={(props) => {
           const {
@@ -194,7 +212,7 @@ class App extends Component {
         <Route exact path="/posts/new" render={(props) => {
         const {
           body,
-          description
+        description
         } = this.state.postForm;
 
         return (
@@ -213,10 +231,13 @@ class App extends Component {
 
       const {
         body,
-        description
+      description
       } = this.state.postForm;
       return (
         <>
+
+        <Link to='/updateprofile'>Edit Profile</Link>
+
         <PostForm
           body={body}
           description={description}
@@ -230,6 +251,27 @@ class App extends Component {
       );
     }} />
 
+    <Route exact path='/updateprofile' render={(props) => {
+      return (
+        <>
+        <Banner {...props}
+        banner={this.state.currentUser.banner}
+        />
+        <ProfilePic {...props}
+        profile_pic={this.state.currentUser.profile_pic}
+        />
+
+        <BioForm {...props}
+        />
+        </>
+      )
+    }}/>
+
+    <Route exact path='/userprofile' render={(props) => {
+      return(
+      <UserProfile />
+      )
+    }} />
 
       </div>
     );
