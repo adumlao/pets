@@ -51,15 +51,3 @@ export const loginUser = async ({ email, password }) => {
   console.log(data);
   return data;
 }
-
-export const getAllUsers = async () => {
-  const token = localStorage.getItem('authToken');
-  const resp = await api.get('/users', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
- )
-  console.log(resp.data)
-  return resp.data
-}

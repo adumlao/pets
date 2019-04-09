@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import {
-  getAllUsers,
   registerUser,
   verifyToken,
   loginUser } from './services/user';
@@ -31,17 +30,17 @@ class App extends Component {
       },
       postForm: {
         body: '',
-        description: ''
+        description: '',
+        posted_by: ''
       },
       posts: [],
-      users: []
     }
     this.handleRegisterFormChange = this.handleRegisterFormChange.bind(this);
     this.handleLoginFormChange = this.handleLoginFormChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handlePostFormChange = this.handlePostFormChange.bind(this);
-    this.handleCreatePost = this.handleCreatePost.bind(this);
+    this.handleSubmitPost = this.handleSubmitPost.bind(this);
   };
 
   async componentDidMount() {
@@ -68,19 +67,15 @@ class App extends Component {
      });
    }
 
-   async fetchUsers() {
-      const users = await getAllUsers();
-      this.setState({
-        users
-      });
-    }
-
 
     async handleLogin(e) {
     e.preventDefault();
     const { user }= await loginUser(this.state.loginFormData);
     this.setState({
-      currentUser: user
+      currentUser: user,
+      postForm: {
+        posted_by: user.name
+      }
     });
     this.fetchPosts();
     this.props.history.push('/feed');
@@ -111,17 +106,25 @@ class App extends Component {
     const { registerFormData } = this.state;
     const { user } = await registerUser(registerFormData);
     this.setState({
-      currentUser: user
+      currentUser: user,
+      postForm: {
+        posted_by: user.name
+      }
     });
     this.fetchPosts();
     this.props.history.push('/feed');
   }
 
-  async handleCreatePost(e) {
-    e.preventDefault();
+
+  async handleCreatePost() {
     await createPost(this.state.postForm);
-    this.fetchPosts();
-    this.props.history.push('/feed')
+   }
+
+   async handleSubmitPost(e){
+     e.preventDefault();
+     await this.handleCreatePost();
+     this.fetchPosts();
+     this.props.history.push('/feed')
    }
 
    handlePostFormChange(e) {
@@ -135,7 +138,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.currentUser);
+    console.log(this.state.posted_by);
     const {
       currentUser
     } = this.state;
@@ -199,7 +202,7 @@ class App extends Component {
             body={body}
             description={description}
             handleChange={this.handlePostFormChange}
-            handleSubmit={this.handleCreatePost} />
+            handleSubmit={this.handleSubmitPost} />
         );
       }} />
 
@@ -218,7 +221,7 @@ class App extends Component {
           body={body}
           description={description}
           handleChange={this.handlePostFormChange}
-          handleSubmit={this.handleCreatePost} />
+          handleSubmit={this.handleSubmitPost} />
 
         <PostsList
           users={this.state.users}

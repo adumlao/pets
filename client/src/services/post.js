@@ -2,7 +2,6 @@ import { api } from './api';
 
 export const getPosts = async () => {
   const resp = await api.get('/posts');
-  console.log(resp.data.posts);
   return resp.data.posts;
 };
 

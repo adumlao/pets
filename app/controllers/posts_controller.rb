@@ -3,6 +3,7 @@ class PostsController < ApplicationController
 
   def index
     render json: { posts: Post.order("created_at desc").all }
+
   end
 
   def create
@@ -23,6 +24,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:body, :description, :user_id)
+    params.require(:post).permit(:body, :description, :posted_by, :user_id)
   end
 end
