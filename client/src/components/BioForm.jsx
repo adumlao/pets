@@ -1,12 +1,15 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import {
+  getUser,
   updateUser } from '../services/user'
 
-export default class BioForm extends React.Component {
+class BioForm extends React.Component {
     constructor(props) {
       super(props)
 
        this.state = {
+         user: [],
          bioForm: {
            location: '',
            bio: '',
@@ -26,11 +29,12 @@ export default class BioForm extends React.Component {
       }))
     }
 
-     async submitBio(){
+     async submitBio(e){
+       e.preventDefault();
        const id = await localStorage.getItem('id');
        const updated = await updateUser(id, this.state.bioForm);
-
-       this.props.history.push(`/userprofile`);
+       this.props.fetchUser();
+       this.props.history.push('/userprofile')
       }
 
      render(){
@@ -61,3 +65,5 @@ export default class BioForm extends React.Component {
   )
 }
 }
+
+export default withRouter(BioForm);

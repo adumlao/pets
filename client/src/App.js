@@ -45,6 +45,7 @@ class App extends Component {
         location: '',
         bio: '',
       },
+      thisUser: [],
     }
     this.handleRegisterFormChange = this.handleRegisterFormChange.bind(this);
     this.handleLoginFormChange = this.handleLoginFormChange.bind(this);
@@ -54,7 +55,15 @@ class App extends Component {
     this.handleSubmitPost = this.handleSubmitPost.bind(this);
     this.handleBioFormChange = this.handleBioFormChange.bind(this);
     this.submitBio = this.submitBio.bind(this);
+    this.fetchUser = this.fetchUser.bind(this);
   };
+
+  async fetchUser() {
+    const thisUser = await getUser(this.state.currentUser.id)
+    this.setState({
+    thisUser: thisUser
+    })
+  }
 
   async componentDidMount() {
       const { user } = await verifyToken();
@@ -157,7 +166,8 @@ class App extends Component {
    }))
  }
 
-  async submitBio(){
+  async submitBio(e){
+    e.preventDefault();
     const id = await localStorage.getItem('id');
     const updated = await updateUser(id, this.state.bioForm);
 
@@ -165,11 +175,11 @@ class App extends Component {
    }
 
   render() {
-    const {
-      currentUser
-    } = this.state;
+    console.log(this.state.currentUser);
+    console.log(this.state.user);
 
     return (
+
       <div className="App">
 
         <nav>
@@ -245,7 +255,6 @@ class App extends Component {
           handleSubmit={this.handleSubmitPost} />
 
         <PostsList
-          users={this.state.users}
           posts={posts} />
         </>
       );
@@ -262,16 +271,16 @@ class App extends Component {
         />
 
         <BioForm {...props}
+        fetchUser={this.fetchUser}
         />
         </>
       )
     }}/>
 
-    <Route exact path='/userprofile' render={(props) => {
-      return(
-      <UserProfile />
-      )
-    }} />
+    <Route exact path='/userprofile' render={(props) => (
+      <UserProfile 
+      />
+      )} />
 
       </div>
     );

@@ -14,7 +14,7 @@
   margin-bottom: 30px;
 }
 
-.banner {
+.banner, .profile-banner {
   width: 100vw;
   height: 20em;
   border: 1px solid black;
