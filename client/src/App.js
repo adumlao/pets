@@ -56,6 +56,7 @@ class App extends Component {
     this.handleBioFormChange = this.handleBioFormChange.bind(this);
     this.submitBio = this.submitBio.bind(this);
     this.fetchUser = this.fetchUser.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   };
 
   async fetchUser() {
@@ -74,6 +75,7 @@ class App extends Component {
       await this.fetchPosts();
       }
     }
+
 
 
   async fetchPosts() {
@@ -166,6 +168,11 @@ class App extends Component {
    }))
  }
 
+ handleLogout() {
+  localStorage.clear();
+  this.props.history.push('/login');
+}
+
   async submitBio(e){
     e.preventDefault();
     const id = await localStorage.getItem('id');
@@ -175,9 +182,6 @@ class App extends Component {
    }
 
   render() {
-    console.log(this.state.currentUser);
-    console.log(this.state.user);
-
     return (
 
       <div className="App">
@@ -185,6 +189,7 @@ class App extends Component {
         <nav>
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
+            <div onClick={this.handleLogout} className="logout-button">Logout</div>
         </nav>
 
 
@@ -247,6 +252,7 @@ class App extends Component {
         <>
 
         <Link to='/updateprofile'>Edit Profile</Link>
+        <Link to='/userprofile'>View Profile</Link>
 
         <PostForm
           body={body}
@@ -278,8 +284,10 @@ class App extends Component {
     }}/>
 
     <Route exact path='/userprofile' render={(props) => (
-      <UserProfile 
-      />
+      <>
+      <UserProfile />
+
+      </>
       )} />
 
       </div>

@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   get "/users/verify", to: 'users#verify'
   post "/users/login", to: 'users#login'
 
-  resources :posts
-  resources :users
+  resources :users do
+    resources :posts
+  end
+  
+  get "/posts", to: 'posts#all'
 
 end
