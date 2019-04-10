@@ -70,7 +70,7 @@ class App extends Component {
       this.setState({
         currentUser: user
       })
-      await this.fetchPosts();
+
       }
     }
 
@@ -218,9 +218,7 @@ class App extends Component {
         <Link to='/userprofile'>View Profile</Link>
 
         <PostForm  />
-        <PostsList
-        posts={posts}
-        />
+        
         </>
       );
     }} />
@@ -245,7 +243,7 @@ class App extends Component {
     <Route exact path='/userprofile' render={(props) => (
       <>
       <UserProfile />
-  
+
       </>
       )} />
 

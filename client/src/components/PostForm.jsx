@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import {
     getPosts,
     createPost } from '../services/post';
+import PostsList from './PostsList'
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -22,6 +23,13 @@ class PostForm extends React.Component {
      this.onImageDrop = this.onImageDrop.bind(this)
      this.handlePostFormChange = this.handlePostFormChange.bind(this);
      this.handleSubmitPost = this.handleSubmitPost.bind(this);
+   }
+
+   async componentDidMount(){
+     const posts = await getPosts();
+     this.setState({
+       posts
+     })
    }
 
    getFiles(filepath) {
@@ -45,13 +53,6 @@ class PostForm extends React.Component {
    }
 
 
-   async fetchPosts() {
-     const posts = await getPosts();
-     this.setState({
-       posts
-     });
-   }
-
       async handleSubmitPost(e){
         e.preventDefault();
         const id = await localStorage.getItem('id');
@@ -62,8 +63,11 @@ class PostForm extends React.Component {
           posted_by: name
         }
         await createPost(id, data);
-        await this.fetchPosts();
-        this.props.history.push('/feed')
+        const posts = await getPosts();
+        this.setState({
+          posts
+        });
+
       }
 
       handlePostFormChange(e) {
@@ -75,6 +79,7 @@ class PostForm extends React.Component {
      }
 
   render(props){
+    console.log(this.state.posts);
     const {
       body,
       description,
@@ -116,7 +121,9 @@ class PostForm extends React.Component {
         onClick={this.handleSubmitPost}
         type="submit">Post</button>
     </form>
-
+    <PostsList
+    posts={this.state.posts}
+      />
     </>
   )
 }
