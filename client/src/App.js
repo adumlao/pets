@@ -51,8 +51,6 @@ class App extends Component {
     this.handleLoginFormChange = this.handleLoginFormChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-    this.handlePostFormChange = this.handlePostFormChange.bind(this);
-    this.handleSubmitPost = this.handleSubmitPost.bind(this);
     this.handleBioFormChange = this.handleBioFormChange.bind(this);
     this.submitBio = this.submitBio.bind(this);
     this.fetchUser = this.fetchUser.bind(this);
@@ -76,8 +74,6 @@ class App extends Component {
       }
     }
 
-
-
   async fetchPosts() {
      const posts = await getPosts();
      this.setState({
@@ -95,6 +91,7 @@ class App extends Component {
          }
        });
        localStorage.setItem('id', user.id);
+       localStorage.setItem('name', user.name);
        this.fetchPosts();
        this.props.history.push('/feed');
      }
@@ -132,31 +129,11 @@ class App extends Component {
      }
    });
    localStorage.setItem('id', user.id);
+   localStorage.setItem('name', user.name);
    this.fetchPosts();
    this.props.history.push('/feed');
  }
 
-
-  async handleCreatePost() {
-    await createPost(this.state.postForm);
-   }
-
-   async handleSubmitPost(e){
-     e.preventDefault();
-     await this.handleCreatePost();
-     this.fetchPosts();
-     this.props.history.push('/feed')
-   }
-
-   handlePostFormChange(e) {
-    const { name, value } = e.target;
-    this.setState(prevState => ({
-      postForm: {
-        ...prevState.postForm,
-        [name]: value
-      }
-    }))
-  }
 
   handleBioFormChange(e) {
    const { name, value } = e.target;
@@ -225,17 +202,8 @@ class App extends Component {
         }} />
 
         <Route exact path="/posts/new" render={(props) => {
-        const {
-          body,
-        description
-        } = this.state.postForm;
-
         return (
-          <PostForm
-            body={body}
-            description={description}
-            handleChange={this.handlePostFormChange}
-            handleSubmit={this.handleSubmitPost} />
+          <PostForm />
         );
       }} />
 
@@ -243,25 +211,16 @@ class App extends Component {
       const {
         posts
       } = this.state;
-
-      const {
-        body,
-      description
-      } = this.state.postForm;
       return (
         <>
 
         <Link to='/updateprofile'>Edit Profile</Link>
         <Link to='/userprofile'>View Profile</Link>
 
-        <PostForm
-          body={body}
-          description={description}
-          handleChange={this.handlePostFormChange}
-          handleSubmit={this.handleSubmitPost} />
-
+        <PostForm  />
         <PostsList
-          posts={posts} />
+        posts={posts}
+        />
         </>
       );
     }} />
@@ -286,7 +245,7 @@ class App extends Component {
     <Route exact path='/userprofile' render={(props) => (
       <>
       <UserProfile />
-
+  
       </>
       )} />
 

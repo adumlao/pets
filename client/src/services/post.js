@@ -7,8 +7,8 @@ export const getPosts = async () => {
 };
 
 
-export const createPost = async (data) => {
-  const resp = await api.post('/posts', data);
+export const createPost = async (id, data) => {
+  const resp = await api.post(`/users/${id}/posts`, data);
   console.log(resp.data);
   return resp.data;
 }

@@ -1,13 +1,11 @@
 class PostsController < ApplicationController
   before_action :ensure_signed_in
 
-  def index
     def index
       @user = User.find(params[:user_id])
       @posts = Post.where(user_id: @user.id)
       render json: @posts
     end
-  end
 
   def all
     render json: { posts: Post.order("created_at desc").all }

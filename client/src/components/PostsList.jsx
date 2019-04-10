@@ -7,7 +7,7 @@ const PostsList = (props) =>  {
     {props.posts.map(x => (
       <div key={x.id}>
         <h2>{x.posted_by}</h2>
-        <h3>{x.body}</h3>
+          {x.body === null ? null : <div className="profileImg" style={{backgroundImage: `url(${x.body})`}}></div>}
         <p>{x.description}</p>
       </div>
     ))}
