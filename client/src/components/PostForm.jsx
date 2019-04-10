@@ -4,6 +4,7 @@ import FilesBase64 from 'react-file-base64';
 import { withRouter } from 'react-router';
 
 import {
+    deletePost,
     getPosts,
     createPost } from '../services/post';
 import PostsList from './PostsList'
@@ -23,6 +24,18 @@ class PostForm extends React.Component {
      this.onImageDrop = this.onImageDrop.bind(this)
      this.handlePostFormChange = this.handlePostFormChange.bind(this);
      this.handleSubmitPost = this.handleSubmitPost.bind(this);
+     this.deleteThisPost = this.deleteThisPost.bind(this);
+   }
+
+
+
+   async deleteThisPost(id){
+     const userId = await localStorage.getItem('id');
+     await deletePost(userId, id);
+     const posts = await getPosts();
+     this.setState({
+       posts
+     });
    }
 
    async componentDidMount(){
@@ -123,6 +136,7 @@ class PostForm extends React.Component {
     <PostsList{...props}
     posts={this.state.posts}
     user={this.props.currentUser}
+    deleteThisPost={this.deleteThisPost}
       />
     </>
   )

@@ -11,8 +11,10 @@ const PostsList = (props) =>  {
         <p>{x.description}</p>
 
         {props.user === x.user_id ?
+          <>
           <Link to={`/post/${x.id}/edit`}>Edit Post</Link>
-
+          <button onClick={() => props.deleteThisPost(x.id)}>Delete Post</button>
+          </>
           : null
         }
 

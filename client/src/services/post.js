@@ -24,3 +24,9 @@ export const updatePosts = async (userId, postId, data) => {
   console.log(resp.data);
   return resp.data;
 }
+
+export const deletePost = async (userId, postId) => {
+  const resp = await api.delete(`/users/${userId}/posts/${postId}`)
+  console.log(resp.data);
+  return resp.data;
+}
