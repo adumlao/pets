@@ -20,6 +20,7 @@ import ProfilePic from './components/ProfilePic';
 import Banner from './components/Banner';
 import BioForm from './components/BioForm';
 import UserProfile from './components/UserProfile';
+import EditForm from './components/EditForm';
 
 class App extends Component {
   constructor(props) {
@@ -217,8 +218,10 @@ class App extends Component {
         <Link to='/updateprofile'>Edit Profile</Link>
         <Link to='/userprofile'>View Profile</Link>
 
-        <PostForm  />
-        
+        <PostForm {...props}
+        currentUser={this.state.currentUser.id}
+        />
+
         </>
       );
     }} />
@@ -243,8 +246,11 @@ class App extends Component {
     <Route exact path='/userprofile' render={(props) => (
       <>
       <UserProfile />
-
       </>
+      )} />
+
+      <Route exact path='/post/:id/edit' render={(props) =>(
+        <EditForm {...props} />
       )} />
 
       </div>

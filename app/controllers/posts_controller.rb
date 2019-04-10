@@ -4,7 +4,8 @@ class PostsController < ApplicationController
     def index
       @user = User.find(params[:user_id])
       @posts = Post.where(user_id: @user.id)
-      render json: @posts
+      posts = @posts.order("created_at desc")
+      render json: posts
     end
 
   def all

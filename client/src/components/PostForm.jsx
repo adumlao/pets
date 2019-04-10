@@ -79,7 +79,6 @@ class PostForm extends React.Component {
      }
 
   render(props){
-    console.log(this.state.posts);
     const {
       body,
       description,
@@ -121,8 +120,9 @@ class PostForm extends React.Component {
         onClick={this.handleSubmitPost}
         type="submit">Post</button>
     </form>
-    <PostsList
+    <PostsList{...props}
     posts={this.state.posts}
+    user={this.props.currentUser}
       />
     </>
   )

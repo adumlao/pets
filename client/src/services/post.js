@@ -18,3 +18,9 @@ export const getUserPosts = async (id) => {
   console.log(resp.data);
   return resp.data;
 }
+
+export const updatePosts = async (userId, postId, data) => {
+  const resp = await api.put(`/users/${userId}/posts/${postId}`, data)
+  console.log(resp.data);
+  return resp.data;
+}
