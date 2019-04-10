@@ -1,23 +1,22 @@
 .App {
   text-align: center;
+  background-color: lightgrey;
 }
 
 .profileImg {
   border-radius: 50%;
-  width: 300px;
-  height: 300px;
-  margin-top: auto 0;
-  border: 1px solid black;
+  width: 10em;
+  height: 10em;
+  margin: 0% 2%;
+  border: 5px solid white;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  margin-bottom: 30px;
 }
 
 .banner, .profile-banner {
-  width: 100vw;
+  width: 55em;
   height: 20em;
-  border: 1px solid black;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -25,4 +24,119 @@
 
 .bio-form{
   margin-bottom: 50em;
+}
+
+.user-page{
+  display: flex;
+  flex-direction: column;
+}
+
+header{
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.user{
+  margin-top: -8em;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.username{
+  font-size: 2em;
+  color: white;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.body{
+  margin: 2em 0em;
+  display: flex;
+  justify-content: center;
+}
+
+.bio{
+  width: 20%;
+  height: 20em;
+  display: flex;
+  flex-direction: column;
+}
+
+.location{
+  background-color: white;
+  font-size: 1em;
+  border: 1px solid grey;
+  padding: 5%;
+}
+
+.user-blurb{
+  background-color: white;
+  border: 1px solid grey;
+  padding: 5%;
+  font-size: 1em;
+}
+
+.user-posts{
+  width: 50%;
+  margin-left: 3em;
+}
+
+.feed{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.post-block{
+  background-color: white;
+  padding: 5%;
+  border: 1px solid gray;
+  margin-bottom: 1em;
+}
+
+.post-by{
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.post-date{
+  font-size: smaller;
+}
+
+.post-caption{
+  margin: 1em 0em;
+}
+
+.post-image{
+  width: 25em;
+  height: 25em;
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+nav{
+  color: white;
+  margin-bottom: 0.2em;
+  background-color: #e623a5;
+  padding: 1.2em 5em;
+  justify-content: space-between;
+  display: flex;
+}
+
+.nav-links{
+  display:flex;
+}
+
+.nav-buttons{
+  text-decoration: none;
+  color: white;
+  margin: 0em 2em;
+}
+
+.nav-buttons:hover{
+  text-transform: uppercase;
+  text-decoration: underline;
 }

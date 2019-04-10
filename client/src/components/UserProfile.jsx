@@ -38,15 +38,29 @@ class UserProfile extends React.Component {
 
   render(props){
     return(
-      <div>
-      <div className="profile-banner" style={{backgroundImage: `url(${this.state.user.banner})`}}></div>
-      <div className="profileImg" style={{backgroundImage: `url(${this.state.user.profile_pic})`}}></div>
-      <h2>{this.state.user.name}</h2>
-      <div>{this.state.user.location}</div>
-      <div>{this.state.user.bio}</div>
-      <PostsList
-      posts={this.state.userPosts}
-      />
+      <div className='user-page'>
+
+      <header>
+        <div className="profile-banner" style={{backgroundImage: `url(${this.state.user.banner})`}}></div>
+
+        <div className='user'>
+          <div className="profileImg" style={{backgroundImage: `url(${this.state.user.profile_pic})`}}></div>
+          <div className='username'>Hi! I'm {this.state.user.name}.</div>
+        </div>
+      </header>
+
+      <div className="body">
+        <div className="bio">
+          <div className="location">Lives in: {this.state.user.location}</div>
+          <div className="user-blurb">{this.state.user.bio}</div>
+        </div>
+        <div className="user-posts">
+        <PostsList
+        posts={this.state.userPosts}
+        />
+        </div>
+      </div>
+
       </div>
 
 

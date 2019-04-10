@@ -118,7 +118,6 @@ class App extends Component {
     }));
   }
 
-
   async handleRegister(e) {
    e.preventDefault();
    const { registerFormData } = this.state;
@@ -164,11 +163,12 @@ class App extends Component {
 
       <div className="App">
 
-        <nav>
-            <Link to="/register">Register</Link>
-            <Link to="/login">Login</Link>
-            <div onClick={this.handleLogout} className="logout-button">Logout</div>
-        </nav>
+        <Route exact path='/' render={() => (
+          <nav>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
+          </nav>
+        )}/>
 
 
 
@@ -188,45 +188,38 @@ class App extends Component {
           )
         }} />
 
-        <Route path="/login" render={(props) => {
-          const {
-            email,
-            password
-          } = this.state.loginFormData;
-          return (
-            <LoginForm
-              email={email}
-              password={password}
-              handleChange={this.handleLoginFormChange}
-              handleSubmit={this.handleLogin} />
-          )
+      <Route path="/login" render={(props) => {
+        const {
+        email,
+        password
+        } = this.state.loginFormData;
+        return (
+        <LoginForm
+        email={email}
+        password={password}
+        handleChange={this.handleLoginFormChange}
+        handleSubmit={this.handleLogin} />
+        )
         }} />
 
-        <Route exact path="/posts/new" render={(props) => {
-        return (
-          <PostForm />
-        );
-      }} />
 
       <Route exact path="/feed" render={(props) => {
       const {
         posts
       } = this.state;
       return (
-        <>
+      <>
+      <Link to='/userprofile'>View Profile</Link>
+      <div onClick={this.handleLogout} className="logout-button">Logout</div>
+      <PostForm {...props}
+      currentUser={this.state.currentUser.id}
+      />
 
-        <Link to='/updateprofile'>Edit Profile</Link>
-        <Link to='/userprofile'>View Profile</Link>
-
-        <PostForm {...props}
-        currentUser={this.state.currentUser.id}
-        />
-
-        </>
+      </>
       );
-    }} />
+      }} />
 
-    <Route exact path='/updateprofile' render={(props) => {
+      <Route exact path='/updateprofile' render={(props) => {
       return (
         <>
         <Banner {...props}
@@ -241,16 +234,26 @@ class App extends Component {
         />
         </>
       )
-    }}/>
+      }}/>
 
-    <Route exact path='/userprofile' render={(props) => (
+      <Route exact path='/userprofile' render={(props) => (
       <>
+      <nav>
+      <div>my-bff</div>
+
+      <div className='nav-links'>
+      <Link className="nav-buttons" to='/feed'>Home</Link>
+      <Link className="nav-buttons" to='/updateprofile'>Edit Profile</Link>
+      <div className="nav-buttons" onClick={this.handleLogout}>Logout</div>
+      </div>
+      </nav>
+
       <UserProfile />
       </>
       )} />
 
       <Route exact path='/post/:id/edit' render={(props) =>(
-        <EditForm {...props} />
+      <EditForm {...props} />
       )} />
 
       </div>
