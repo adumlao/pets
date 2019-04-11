@@ -27,6 +27,12 @@ class PostsController < ApplicationController
     end
   end
 
+  def show
+    @user = User.find(params[:user_id])
+    @post = Post.find(params[:id])
+    render json: @post
+  end
+
   def destroy
     @post = Post.find(params[:id])
     @user = User.find(params[:user_id])

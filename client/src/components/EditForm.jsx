@@ -2,6 +2,7 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import FilesBase64 from 'react-file-base64';
 import {
+    getSpecificPost,
     getPosts,
     updatePosts } from '../services/post';
 
@@ -10,6 +11,7 @@ class EditForm extends React.Component {
        super(props)
 
        this.state = {
+         specificPost: [],
          posts:[],
          body: '',
          description: '',
@@ -17,6 +19,7 @@ class EditForm extends React.Component {
          filepath: '',
          uploadedFile: null,
        }
+
        this.onImageDrop = this.onImageDrop.bind(this)
        this.handlePostFormChange = this.handlePostFormChange.bind(this);
        this.handelEditPost = this.handelEditPost.bind(this);
@@ -24,9 +27,14 @@ class EditForm extends React.Component {
      }
 
      async componentDidMount(){
+       const userId = await localStorage.getItem('id');
+       const postId = this.props.match.params.id
+
        const posts = await getPosts();
+       const specificPost = await getSpecificPost(userId, postId);
        this.setState({
-         posts
+         posts,
+         specificPost
        })
      }
 
@@ -54,7 +62,6 @@ class EditForm extends React.Component {
     async savePhoto(){
     const userId = await localStorage.getItem('id');
     const postId = this.props.match.params.id
-    const name = await localStorage.getItem('name');
     const data = {
       body: this.state.uploadedFile,
       }
@@ -98,9 +105,9 @@ class EditForm extends React.Component {
         <div>Edit Post</div>
         <form>
 
-        <div {...props}
+        <div
         className="profileImg"
-        style={{backgroundImage: `url(${this.state.uploadedFile }`}}>
+        style={{backgroundImage: `url(${this.state.uploadedFile ? this.state.uploadedFile : this.state.specificPost.body}`}}>
         <Dropzone
           onDrop={acceptedFiles => {
             this.onImageDrop(acceptedFiles);

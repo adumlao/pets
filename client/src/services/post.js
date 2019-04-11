@@ -30,3 +30,9 @@ export const deletePost = async (userId, postId) => {
   console.log(resp.data);
   return resp.data;
 }
+
+export const getSpecificPost = async (userId, postId) => {
+  const resp = await api.get(`/users/${userId}/posts/${postId}`)
+  console.log(resp.data);
+  return resp.data;
+}
