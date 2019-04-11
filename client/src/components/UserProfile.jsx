@@ -57,6 +57,7 @@ class UserProfile extends React.Component {
         <div className="user-posts">
         <PostsList
         posts={this.state.userPosts}
+        user={this.state.user.id}
         />
         </div>
       </div>

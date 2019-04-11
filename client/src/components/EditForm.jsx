@@ -10,7 +10,7 @@ class EditForm extends React.Component {
        super(props)
 
        this.state = {
-
+         posts:[],
          body: '',
          description: '',
          posted_by: '',
@@ -47,8 +47,19 @@ class EditForm extends React.Component {
          this.setState({
            uploadedFile: result
          })
+         this.savePhoto();
        })
      }
+
+    async savePhoto(){
+    const userId = await localStorage.getItem('id');
+    const postId = this.props.match.params.id
+    const name = await localStorage.getItem('name');
+    const data = {
+      body: this.state.uploadedFile,
+      }
+    await updatePosts(userId, postId, data);
+    }
 
      async handelEditPost(e){
        e.preventDefault();
@@ -56,7 +67,7 @@ class EditForm extends React.Component {
        const postId = this.props.match.params.id
        const name = await localStorage.getItem('name');
        const data = {
-         body: this.state.uploadedFile,
+         body: this.state.posts.filter(x=>(x.id === postId )).map(x=>(x.body)),
          description: this.state.description,
          posted_by: name
        }
@@ -87,7 +98,9 @@ class EditForm extends React.Component {
         <div>Edit Post</div>
         <form>
 
-        <div className="profileImg" style={{backgroundImage: `url(${this.state.uploadedFile ? this.state.uploadedFile : this.props.profile_pic}`}}>
+        <div {...props}
+        className="profileImg"
+        style={{backgroundImage: `url(${this.state.uploadedFile }`}}>
         <Dropzone
           onDrop={acceptedFiles => {
             this.onImageDrop(acceptedFiles);

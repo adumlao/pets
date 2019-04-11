@@ -19,10 +19,10 @@ const PostsList = (props) =>  {
         <div className="post-image" style={{backgroundImage: `url(${x.body})`}}></div>}
 
         {props.user === x.user_id ?
-        <>
-        <Link to={`/post/${x.id}/edit`}>Edit Post</Link>
-        <button onClick={() => props.deleteThisPost(x.id)}>Delete Post</button>
-        </>
+        <div className="edits">
+        <Link className="edit-buttons" to={`/post/${x.id}/edit`}>Edit</Link>
+        <div className="edit-buttons" onClick={() => props.deleteThisPost(x.id)}>Delete</div>
+        </div>
         : null
         }
 

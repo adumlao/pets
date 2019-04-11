@@ -21,6 +21,7 @@ import Banner from './components/Banner';
 import BioForm from './components/BioForm';
 import UserProfile from './components/UserProfile';
 import EditForm from './components/EditForm';
+import RandomUser from './components/RandomUser'
 
 class App extends Component {
   constructor(props) {
@@ -209,11 +210,20 @@ class App extends Component {
       } = this.state;
       return (
       <>
-      <Link to='/userprofile'>View Profile</Link>
-      <div onClick={this.handleLogout} className="logout-button">Logout</div>
+      <nav>
+      <div>my-bff</div>
+      <div className='nav-links'>
+      <Link className="nav-buttons" to='/userprofile'>View Profile</Link>
+      <div onClick={this.handleLogout} className="nav-buttons">Logout</div>
+      </div>
+      </nav>
+
+      <div className="body">
+      <RandomUser />
       <PostForm {...props}
       currentUser={this.state.currentUser.id}
       />
+      </div>
 
       </>
       );
@@ -222,6 +232,16 @@ class App extends Component {
       <Route exact path='/updateprofile' render={(props) => {
       return (
         <>
+        <nav>
+        <div>my-bff</div>
+
+        <div className='nav-links'>
+        <Link className="nav-buttons" to='/feed'>Home</Link>
+        <Link className="nav-buttons" to='/userprofile'>View Profile</Link>
+        <div className="nav-buttons" onClick={this.handleLogout}>Logout</div>
+        </div>
+        </nav>
+
         <Banner {...props}
         banner={this.state.currentUser.banner}
         />
@@ -253,7 +273,8 @@ class App extends Component {
       )} />
 
       <Route exact path='/post/:id/edit' render={(props) =>(
-      <EditForm {...props} />
+      <EditForm {...props}
+      />
       )} />
 
       </div>

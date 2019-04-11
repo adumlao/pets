@@ -97,48 +97,54 @@ class PostForm extends React.Component {
       description,
     } = this.state
   return (
-    <>
-    <form>
+    <div className="user-posts">
 
-    <div className="profileImg" style={{backgroundImage: `url(${this.state.uploadedFile ? this.state.uploadedFile : this.props.profile_pic}`}}>
+    <form className='update-form'>
+    <div className="update-img" style={{backgroundImage: `url(${this.state.uploadedFile}`}}>
+
     <Dropzone
-      onDrop={acceptedFiles => {
-        this.onImageDrop(acceptedFiles);
+    onDrop={acceptedFiles => {
+    this.onImageDrop(acceptedFiles);
       }}
-      multiple={false}>
-      {({getRootProps, getInputProps, isDragActive}) => {
-        return (
-          <div {...getRootProps()} >
-          <input {...getInputProps()} />
-            { isDragActive ?
-              <p>''</p> :
-              <p> Drag 'n' drop image <br/> or click to select files </p>
-            }
-          </div>
-          )
-        }}
+    multiple={false}>
+    {({getRootProps, getInputProps, isDragActive}) => {
+    return (
+      <div className="drop" {...getRootProps()} >
+      <input {...getInputProps()} />
+      { isDragActive ?
+      <div className="drop-cross"> + </div> :
+      <div className="drop-text"> Drag / Upload Photo </div>
+      }
+      </div>
+      )
+    }}
     </Dropzone>
     </div>
 
-      <label htmlFor="description">What's on your mind?</label>
-      <textarea
-        rows = "5"
-        cols = "50"
-        name="description"
-        id="description"
-        value={description}
-        onChange={this.handlePostFormChange} />
+    <div className="update-text">
+    <textarea
+    className="update-blog"
+    rows = "7"
+    cols = "45"
+    name="description"
+    id="description"
+    placeholder="Meow, Woof, Oink, Neigh, Chirp Away!"
+    value={description}
+    onChange={this.handlePostFormChange} />
 
-      <button
-        onClick={this.handleSubmitPost}
-        type="submit">Post</button>
+    <button
+    className="blog-button"
+    onClick={this.handleSubmitPost}
+    type="submit">Post</button>
+    </div>
     </form>
+
     <PostsList{...props}
     posts={this.state.posts}
     user={this.props.currentUser}
-    deleteThisPost={this.deleteThisPost}
-      />
-    </>
+    deleteThisPost={this.deleteThisPost} />
+
+    </div>
   )
 }
 }
